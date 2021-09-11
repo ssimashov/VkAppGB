@@ -1,13 +1,13 @@
 //
-//  ViewController.swift
+//  LoginViewController.swift
 //  VkAppGB
 //
-//  Created by Sergey Simashov on 05.09.2021.
+//  Created by Sergey Simashov on 08.09.2021.
 //
 
 import UIKit
 
-final class ViewController: UIViewController {
+final class LoginViewController: UIViewController {
 
     @IBOutlet private weak var scrollView: UIScrollView!
     @IBOutlet private weak var titleImageView: UIImageView!
@@ -26,18 +26,6 @@ final class ViewController: UIViewController {
         }
 
     @IBAction func loginButtonPressed(_ sender: UIButton) {
-        // Получаем текст логина
-        let login = loginTextField.text!
-        // Получаем текст-пароль
-        let password = passwordTextfield.text!
-        
-        // Проверяем, верны ли они
-        if login == "admin" && password == "admin" {
-            print("успешная авторизация")
-        } else {
-            print("неуспешная авторизация")
-        }
-
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -79,6 +67,41 @@ final class ViewController: UIViewController {
     @objc private func hideKeyboard() {
         self.scrollView?.endEditing(true)
     }
+
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        
+        let checkResult = checkUserData()
+        
+        if !checkResult{
+            showLoginError()
+        }
+        return checkResult
+    }
+    
+        func checkUserData() -> Bool {
+            guard let login = loginTextField.text,
+                  let password = passwordTextfield.text
+            else {return false}
+            
+            if login == "1" && password == "1" {
+                print("успешная авторизация")
+                return true
+            } else {
+                print("неуспешная авторизация")
+                return false
+            }
+        }
+        
+
+        
+        func showLoginError(){
+            
+            let alert = UIAlertController(title: "Ошибка", message: "Неверные данные", preferredStyle: .alert)
+            let action = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alert.addAction(action)
+            present (alert, animated: true, completion: nil)
+        }
+    
 
 
 }
